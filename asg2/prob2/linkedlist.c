@@ -76,6 +76,50 @@ void delete_ll(node_t *head)
     {
         prev = temp;
         temp = temp->next;
+        free(prev->data);
         free(prev);
     }
+}
+
+node_t* find_node(node_t *head, callback_find cb, void *value)
+{
+    node_t *temp = head;
+    while (temp != NULL)
+    {
+        if(cb(temp, value)) {
+            return temp;
+        } 
+        else {
+            temp = temp->next;
+        } 
+    }
+    return NULL;
+}
+
+static void sorted_insert(node_t **head, node_t *new_node, compare_left_right cb) {
+    node_t *current;
+
+    if (*head == NULL || cb((*head)->data, new_node->data)) {
+        new_node->next = *head;
+        *head = new_node;
+    } else {
+        current = *head;
+        while (current->next != NULL && cb(new_node->data, current->next->data)) {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
+
+void insertion_sort(node_t **head, compare_left_right cb) {
+    node_t *sorted = NULL;
+
+    node_t *current = *head;
+    while (current != NULL) {
+        node_t *next = current->next;
+        sorted_insert(&sorted, current, cb);
+        current = next;
+    }
+    *head = sorted; 
 }
