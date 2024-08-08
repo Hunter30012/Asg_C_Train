@@ -18,6 +18,9 @@ tree_node_t *insert_right(tree_node_t *root, char val);
 
 tree_node_t *find_right(tree_node_t *node, char val);
 
+void print_tree(tree_node_t *root, int level);
+
 void free_tree(tree_node_t *root);
+
 
 #endif
